@@ -15,14 +15,21 @@ fn main() {
     };
 
     let raw = match std::fs::read(&path) {
-        Ok(bytes) => String::from_utf8_lossy(&bytes).into_owned(),
+        Ok(bytes) => bytes,
         Err(err) => {
             eprintln!("could not read {}: {err}", path.display());
             std::process::exit(1);
         }
     };
 
-    let entries = parse::bash::parse(&raw);
+    let is_zsh = path
+        .file_name()
+        .is_some_and(|n| n.to_string_lossy().contains("zsh"));
+    let entries = if is_zsh {
+        parse::zsh::parse(&raw)
+    } else {
+        parse::bash::parse(&String::from_utf8_lossy(&raw))
+    };
     let mut counts: HashMap<&str, usize> = HashMap::new();
     for e in &entries {
         if let Some(program) = e.command.split_whitespace().next() {

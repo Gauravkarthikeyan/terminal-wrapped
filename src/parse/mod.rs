@@ -1,11 +1,13 @@
 //! Parsers that turn raw shell history files into a common [`Entry`] stream.
 
 pub mod bash;
+pub mod zsh;
 
 /// Which shell a history entry came from.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Shell {
     Bash,
+    Zsh,
 }
 
 /// One command the user ran, normalised across shells.
