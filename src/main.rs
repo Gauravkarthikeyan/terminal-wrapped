@@ -1,38 +1,42 @@
+mod detect;
 mod parse;
 
 use std::collections::HashMap;
 use std::path::PathBuf;
 
 fn main() {
-    let path = std::env::args()
-        .nth(1)
-        .map(PathBuf::from)
-        .or_else(|| std::env::var_os("HOME").map(|h| PathBuf::from(h).join(".bash_history")));
-
-    let Some(path) = path else {
-        eprintln!("usage: terminal-wrapped [HISTORY_FILE]");
-        std::process::exit(2);
-    };
-
-    let raw = match std::fs::read(&path) {
-        Ok(bytes) => bytes,
-        Err(err) => {
-            eprintln!("could not read {}: {err}", path.display());
-            std::process::exit(1);
-        }
-    };
-
-    let name = path
-        .file_name()
-        .map(|n| n.to_string_lossy().into_owned())
-        .unwrap_or_default();
-    let entries = if name.contains("zsh") {
-        parse::zsh::parse(&raw)
-    } else if name.contains("fish") {
-        parse::fish::parse(&String::from_utf8_lossy(&raw))
+    let args: Vec<PathBuf> = std::env::args_os().skip(1).map(PathBuf::from).collect();
+    let explicit = !args.is_empty();
+    let paths = if explicit {
+        args
     } else {
-        parse::bash::parse(&String::from_utf8_lossy(&raw))
+        detect::candidates(|k| std::env::var(k).ok())
+            .into_iter()
+            .filter(|p| p.is_file())
+            .collect()
     };
+
+    if paths.is_empty() {
+        eprintln!("no shell history found; pass a file: terminal-wrapped [HISTORY_FILE...]");
+        std::process::exit(2);
+    }
+
+    let mut entries = Vec::new();
+    for path in &paths {
+        match std::fs::read(path) {
+            Ok(raw) => {
+                let found = detect::parse_file(path, &raw);
+                println!("{:>7} commands  {}", found.len(), path.display());
+                entries.extend(found);
+            }
+            Err(err) if explicit => {
+                eprintln!("could not read {}: {err}", path.display());
+                std::process::exit(1);
+            }
+            Err(_) => {}
+        }
+    }
+
     let mut counts: HashMap<&str, usize> = HashMap::new();
     for e in &entries {
         if let Some(program) = e.command.split_whitespace().next() {
@@ -42,7 +46,7 @@ fn main() {
     let mut top: Vec<_> = counts.into_iter().collect();
     top.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(b.0)));
 
-    println!("{} commands in {}", entries.len(), path.display());
+    println!();
     for (program, n) in top.iter().take(5) {
         println!("  {n:>6}  {program}");
     }
