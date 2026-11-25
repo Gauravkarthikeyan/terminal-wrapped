@@ -1,0 +1,154 @@
+: 1764005350:0;git status
+: 1764006210:4;git status
+: 1764006604:4;git status
+: 1764007143:1;git status
+: 1764007251:3;git commit -m wip
+: 1764007342:1;git status
+: 1764007926:3;git status
+: 1764008792:4;ls
+: 1764009040:4;git status
+: 1764009650:4;git commit -m wip
+: 1764009720:1;git status
+: 1764010310:1;cargo test
+: 1764010759:1;docker ps
+: 1764010899:4;cargo test
+: 1764011492:1;git status
+: 1764012107:4;clear
+: 1764012319:2;git status
+: 1764012899:0;docker compose up -d
+: 1764012980:4;ls
+: 1764013508:4;git push
+: 1764014323:2;vim src/main.rs
+: 1764014942:3;git add -p
+: 1764015268:1;ls
+: 1764016003:1;git status
+: 1764092909:3;cargo test
+: 1764093675:3;cargo test
+: 1764094318:0;ls
+: 1764094862:3;ls
+: 1764095657:2;ls
+: 1764096177:3;git status
+: 1764096881:0;docker compose up -d
+: 1764097487:2;cargo test
+: 1764098218:2;gti status
+: 1764098746:4;git push --force
+: 1764098836:0;cd ..
+: 1764099341:0;git status
+: 1764100109:2;clear
+: 1764100720:3;cargo test
+: 1764101473:3;python3 -m http.server
+: 1764101848:0;git push --force
+: 1764102231:1;sl
+: 1764102370:3;git status
+: 1764102613:2;ls
+: 1764103389:1;git commit -m wip
+: 1764103809:3;git status
+: 1764103999:3;git commit -m wip
+: 1764104581:2;ls
+: 1764105439:3;docker ps
+: 1764105744:3;git add -p
+: 1764106463:3;cd ..
+: 1764177218:1;cd ..
+: 1764177912:1;git status
+: 1764178428:4;ls
+: 1764178717:2;git status
+: 1764178886:3;cargo build --release
+: 1764179284:4;docker compose up -d
+: 1764179630:1;git log --oneline | head
+: 1764180529:4;clear
+: 1764181219:0;git push --force
+: 1764182037:4;git commit -m wip
+: 1764182464:3;git commit -m wip
+: 1764182590:3;clear
+: 1764183020:0;ls
+: 1764183108:1;git push
+: 1764183294:0;cargo test
+: 1764183929:0;git status
+: 1764183949:4;ls
+: 1764184518:0;git add -p
+: 1764185166:0;git status
+: 1764185398:4;git add -p
+: 1764185570:2;git add -p
+: 1764186206:2;vim src/main.rs
+: 1764186351:0;vim src/main.rs
+: 1764265223:2;git status
+: 1764265390:0;cargo test
+: 1764266168:2;vim src/main.rs
+: 1764267036:1;cargo build --release
+: 1764267079:1;cargo build --release
+: 1764267469:1;git log --oneline | head
+: 1764268045:0;cargo build --release
+: 1764268370:0;git log --oneline | head
+: 1764269255:2;cargo build --release
+: 1764269650:1;git add -p
+: 1764270460:1;cargo build --release
+: 1764271034:4;cargo test
+: 1764271705:1;sl
+: 1764272555:1;cd ..
+: 1764273412:3;cd ..
+: 1764273636:4;vim src/main.rs
+: 1764274020:0;git status
+: 1764274849:2;vim src/main.rs
+: 1764275134:1;git log --oneline | head
+: 1764275773:2;git push
+: 1764276620:2;git add -p
+: 1764276722:1;git status
+: 1764276974:3;ls
+: 1764277339:1;vim src/main.rs
+: 1764277998:4;git status
+: 1764278508:2;clear
+: 1764278614:0;git commit -m wip
+: 1764279435:1;vim src/main.rs
+: 1764279637:3;clear
+: 1764437801:3;git push --force
+: 1764438232:0;ls
+: 1764438426:1;git status
+: 1764438600:4;vim src/main.rs
+: 1764439445:1;sl
+: 1764440311:4;vim src/main.rs
+: 1764441004:2;ls
+: 1764441585:4;ls
+: 1764441626:0;clear
+: 1764441751:4;ls
+: 1764442215:1;ls
+: 1764442263:2;ls
+: 1764442582:4;cd ..
+: 1764443384:4;cargo test
+: 1764443669:4;git commit -m wip
+: 1764444543:1;git status
+: 1764445320:2;git push --force
+: 1764446018:4;cargo build --release
+: 1764446468:4;ls
+: 1764447032:1;cargo build --release
+: 1764447574:0;git push
+: 1764448389:1;sl
+: 1764448413:1;ls
+: 1764523232:0;docker compose up -d
+: 1764523315:2;htop
+: 1764523865:4;docker compose up -d
+: 1764524379:0;docker compose up -d
+: 1764524457:1;ls
+: 1764524760:0;git status
+: 1764525299:3;docker compose up -d
+: 1764525347:0;git push
+: 1764525700:4;vim src/main.rs
+: 1764526340:4;ls
+: 1764527069:2;git push
+: 1764527609:4;vim src/main.rs
+: 1764528148:1;git log --oneline | head
+: 1764528703:2;docker compose up -d
+: 1764528930:3;ls
+: 1764529376:0;git commit -m wip
+: 1764529848:2;git status
+: 1764530555:1;git push
+: 1764530649:1;python3 -m http.server
+: 1764530979:0;ls
+: 1764531732:2;ls
+: 1764532011:1;vim src/main.rs
+: 1764532255:0;git commit -m wip
+: 1764532773:1;npm run dev
+: 1764533645:1;ls
+: 1764534388:3;cargo build --release
+: 1764534821:2;git commit -m wip
+: 1764535041:2;cargo test
+: 1764535155:2;git status
