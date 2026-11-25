@@ -23,6 +23,11 @@ busiest hour: 00:00
 night owl: 71% of commands between 00:00 and 05:00
 longest streak: 8 days
 typos: sl → ls (4x), gti → git (1x)
+
+you are The Force Pusher
+  History is written by whoever ran `git push --force` last.
+  with traces of: The 3 AM Git Pusher, The Fat Finger, The Night Owl
+
 sudo: 0  force pushes: 5  pipes per command: 0.03
 ```
 
@@ -56,13 +61,18 @@ backup like `history-2025.txt` still works.
 ```text
   ~/.bash_history ─┐
   ~/.zsh_history  ─┼─▶ detect ──▶ parse::{bash,zsh,fish} ──▶ Vec<Entry> ──▶ stats ──▶ output
-  fish_history    ─┘   name,      one parser per format       command,       counts,
-                       first line                              timestamp?     hours,
-                                                               shell          streaks, typos
+  fish_history    ─┘   name,      one parser per format       command,        │         ▲
+                       first line                              timestamp?     ▼         │
+                                                               shell       persona ─────┘
 ```
 
 Every parser produces the same `Entry { command, timestamp, shell }`, so the
 stats never care which shell a command came from.
+
+The persona is a list of rules, each scoring how far past its threshold your
+history goes (`2.0` = twice the bar). The strongest one is you; the others that
+cleared their bar are listed as traits. Generic personas like the Night Owl
+have a higher bar so the specific ones get a chance.
 
 ### Things I didn't expect
 
@@ -87,7 +97,7 @@ stats never care which shell a command came from.
 
 - [x] bash, zsh and fish parsers, auto-detection
 - [x] stats: programs, git subcommands, hour of day, streaks, night-owl score, typos, `--force`
-- [ ] a terminal personality ("The 3 AM Git Pusher", "The Docker Whisperer", ...)
+- [x] a terminal personality ("The 3 AM Git Pusher", "The Docker Whisperer", ...)
 - [ ] animated slide-by-slide reveal, plus `--plain` and `--json`
 - [ ] `--redact` to hide arguments, and a shareable SVG card
 
