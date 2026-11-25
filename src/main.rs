@@ -1,5 +1,6 @@
 mod detect;
 mod parse;
+mod persona;
 mod stats;
 mod typos;
 mod tz;
@@ -75,6 +76,15 @@ fn main() {
             .collect();
         println!("typos: {}", list.join(", "));
     }
+    let verdict = persona::decide(&s, &typos);
+    println!();
+    println!("you are {}", verdict.persona.name);
+    println!("  {}", verdict.persona.tagline);
+    if !verdict.traits.is_empty() {
+        let names: Vec<&str> = verdict.traits.iter().map(|p| p.name).collect();
+        println!("  with traces of: {}", names.join(", "));
+    }
+    println!();
     println!(
         "sudo: {}  force pushes: {}  pipes per command: {:.2}",
         s.sudo, s.force_pushes, s.pipes_per_command
