@@ -22,11 +22,14 @@ fn main() {
         }
     };
 
-    let is_zsh = path
+    let name = path
         .file_name()
-        .is_some_and(|n| n.to_string_lossy().contains("zsh"));
-    let entries = if is_zsh {
+        .map(|n| n.to_string_lossy().into_owned())
+        .unwrap_or_default();
+    let entries = if name.contains("zsh") {
         parse::zsh::parse(&raw)
+    } else if name.contains("fish") {
+        parse::fish::parse(&String::from_utf8_lossy(&raw))
     } else {
         parse::bash::parse(&String::from_utf8_lossy(&raw))
     };

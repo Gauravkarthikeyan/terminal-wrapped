@@ -1,6 +1,7 @@
 //! Parsers that turn raw shell history files into a common [`Entry`] stream.
 
 pub mod bash;
+pub mod fish;
 pub mod zsh;
 
 /// Which shell a history entry came from.
@@ -8,6 +9,7 @@ pub mod zsh;
 pub enum Shell {
     Bash,
     Zsh,
+    Fish,
 }
 
 /// One command the user ran, normalised across shells.
