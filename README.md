@@ -67,9 +67,9 @@ stats never care which shell a command came from.
 ### Things I didn't expect
 
 - **zsh history isn't UTF-8.** zsh "metafies" its history file: any byte in
-  `0x83..=0x9f` is written as `0x83` followed by the byte XOR `0x20`. Most UTF-8
-  characters beyond ASCII contain such bytes, so reading the file naively turns
-  `echo café 🚀` into mojibake. The parser unmetafies the raw bytes before
+  `0x83..=0x9f` is written as `0x83` followed by the byte XOR `0x20`. Plenty of
+  UTF-8 sequences contain those bytes (🚀 is `F0 9F 9A 80`), so reading the file
+  naively turns emoji and a lot of CJK text into mojibake. The parser unmetafies the raw bytes before
   decoding (`src/parse/zsh.rs`).
 - **fish history looks like YAML but isn't.** fish writes it with its own
   serialiser that only escapes backslashes and newlines. A small line scanner is
@@ -77,8 +77,8 @@ stats never care which shell a command came from.
   commands.
 - **`git -C ../repo pull` broke my first git stats.** The subcommand isn't the
   first non-flag word: `-C`, `-c`, `--git-dir` and friends take a value.
-- **Typo detection needs a frequency check.** `gti` is one transposition away
-  from `git`, but so is `cp` from `cd` (one substitution). A program only counts
+- **Typo detection needs a frequency check.** `gti` is one edit away from
+  `git`, but `cp` is also one edit away from `cd`. A program only counts
   as a typo if the command it's one edit away from is used at least 5× more.
 - **The standard library can't tell you your time zone.** Rather than add a time
   crate for one number, it asks `date +%z`.
