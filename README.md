@@ -20,6 +20,7 @@ top programs:
       10  docker
 git: status (28), push (12), commit (11)
 busiest hour: 00:00
+  00 █▆▄▁                  ▁▇ 23
 night owl: 71% of commands between 00:00 and 05:00
 longest streak: 8 days
 typos: sl → ls (4x), gti → git (1x)

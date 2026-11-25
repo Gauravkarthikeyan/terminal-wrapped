@@ -1,6 +1,7 @@
 mod detect;
 mod parse;
 mod persona;
+mod spark;
 mod stats;
 mod typos;
 mod tz;
@@ -61,6 +62,7 @@ fn main() {
             .max_by_key(|&h| (s.hours[h], std::cmp::Reverse(h)))
             .unwrap_or(0);
         println!("busiest hour: {peak:02}:00");
+        println!("  00 {} 23", spark::sparkline(&s.hours));
         println!(
             "night owl: {:.0}% of commands between 00:00 and 05:00",
             s.night_owl * 100.0
