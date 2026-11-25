@@ -1,6 +1,7 @@
 mod detect;
 mod parse;
 mod stats;
+mod typos;
 mod tz;
 
 use std::path::PathBuf;
@@ -64,6 +65,15 @@ fn main() {
             s.night_owl * 100.0
         );
         println!("longest streak: {} days", s.longest_streak);
+    }
+    let typos = typos::find(&s.programs);
+    if !typos.is_empty() {
+        let list: Vec<String> = typos
+            .iter()
+            .take(3)
+            .map(|t| format!("{} → {} ({}x)", t.typed, t.meant, t.count))
+            .collect();
+        println!("typos: {}", list.join(", "));
     }
     println!(
         "sudo: {}  force pushes: {}  pipes per command: {:.2}",
