@@ -1,6 +1,7 @@
 mod detect;
 mod parse;
 mod stats;
+mod tz;
 
 use std::path::PathBuf;
 
@@ -37,7 +38,7 @@ fn main() {
         }
     }
 
-    let s = stats::compute(&entries, 0);
+    let s = stats::compute(&entries, tz::local_offset().unwrap_or(0));
     println!();
     println!("{} commands, {} with timestamps", s.total, s.timestamped);
     println!("top programs:");
@@ -57,7 +58,7 @@ fn main() {
         let peak = (0..24)
             .max_by_key(|&h| (s.hours[h], std::cmp::Reverse(h)))
             .unwrap_or(0);
-        println!("busiest hour: {peak:02}:00 (UTC)");
+        println!("busiest hour: {peak:02}:00");
         println!(
             "night owl: {:.0}% of commands between 00:00 and 05:00",
             s.night_owl * 100.0
