@@ -7,8 +7,15 @@ times. My terminal knows far more embarrassing things about me: how many times I
 typed `gti`, how often I `git push --force` after midnight, and that `ls` is
 somehow my second most-used "program". So I'm building the Wrapped it deserves.
 
+<img src="docs/demo.svg" alt="terminal-wrapped revealing, one slide at a time: 154 commands, git as the top program, git status as the favourite git command, a busiest hour of 00:00 with 71% of commands after midnight, sl as the signature typo, and the persona The Force Pusher." width="565">
+
+That's a real run on the sample history in [`examples/`](examples/), a made-up
+week of a student who codes at night, recorded from the terminal and turned
+into an SVG by [`scripts/demo_svg.py`](scripts/demo_svg.py). Piped, or with
+`--plain`, you get everything at once:
+
 ```text
-$ terminal-wrapped examples/night-owl.zsh_history
+$ terminal-wrapped --plain examples/night-owl.zsh_history
     154 commands  examples/night-owl.zsh_history
 
 154 commands, 154 with timestamps
@@ -32,19 +39,20 @@ you are The Force Pusher
 sudo: 0  force pushes: 5  pipes per command: 0.03
 ```
 
-That's real output from the sample history in [`examples/`](examples/), a
-made-up week of a student who codes at night. (Run with `TZ=Asia/Kolkata`;
-hours are bucketed in your local time zone.) The animated slide-by-slide
-version is next.
+(Run with `TZ=Asia/Kolkata`; hours are bucketed in your local time zone.)
+`--json` prints the same numbers as JSON, aggregates only, never your commands.
 
 ## Try it
 
 ```sh
 cargo run --release                       # finds your bash, zsh and fish history
 cargo run --release -- ~/.zsh_history     # or point it at specific files
+cargo run --release -- --plain            # no animation; also --json, --fast, --help
 ```
 
 No dependencies, nothing leaves your machine. It reads the files and prints.
+Colours come from your terminal's own 16-colour palette, and `NO_COLOR` turns
+them off.
 
 ## Which shells
 
@@ -99,7 +107,7 @@ have a higher bar so the specific ones get a chance.
 - [x] bash, zsh and fish parsers, auto-detection
 - [x] stats: programs, git subcommands, hour of day, streaks, night-owl score, typos, `--force`
 - [x] a terminal personality ("The 3 AM Git Pusher", "The Docker Whisperer", ...)
-- [ ] animated slide-by-slide reveal, plus `--plain` and `--json`
+- [x] animated slide-by-slide reveal, plus `--plain` and `--json`
 - [ ] `--redact` to hide arguments, and a shareable SVG card
 
 ## License
