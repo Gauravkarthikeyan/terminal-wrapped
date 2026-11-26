@@ -66,9 +66,8 @@ fn main() -> ExitCode {
     let report = Report::build(sources, &entries, tz::local_offset().unwrap_or(0));
     let mut out = std::io::stdout().lock();
     let result = match output {
-        Output::Plain | Output::Animated { .. } | Output::Json => {
-            render::plain::write(&mut out, &report)
-        }
+        Output::Json => render::json::write(&mut out, &report),
+        Output::Plain | Output::Animated { .. } => render::plain::write(&mut out, &report),
     };
     // A closed pipe (`terminal-wrapped | head`) is not an error worth reporting.
     match result {
