@@ -9,6 +9,7 @@ mod stats;
 mod typos;
 mod tz;
 
+use std::io::IsTerminal;
 use std::path::PathBuf;
 use std::process::ExitCode;
 
@@ -67,6 +68,16 @@ fn main() -> ExitCode {
     let mut out = std::io::stdout().lock();
     let result = match output {
         Output::Json => render::json::write(&mut out, &report),
+        Output::Animated { fast } if out.is_terminal() => {
+            let style = render::animated::Style {
+                // https://no-color.org: any non-empty value disables colour.
+                color: std::env::var_os("NO_COLOR").is_none_or(|v| v.is_empty()),
+                fast,
+            };
+            let slides = render::slides::slides(&report);
+            render::animated::play(&mut out, &slides, &style, std::thread::sleep)
+        }
+        // Piped or redirected: animation would just be escape-code soup.
         Output::Plain | Output::Animated { .. } => render::plain::write(&mut out, &report),
     };
     // A closed pipe (`terminal-wrapped | head`) is not an error worth reporting.
