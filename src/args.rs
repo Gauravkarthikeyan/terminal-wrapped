@@ -14,6 +14,7 @@ options:
   --plain        print everything at once, no animation or colour
   --json         print the stats as JSON
   --fast         animate, but without the dramatic pauses
+  --card FILE    also write a shareable SVG card (aggregates only)
   -h, --help     show this help
   -V, --version  show the version
 
@@ -32,7 +33,11 @@ pub enum Output {
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum Command {
-    Run { files: Vec<PathBuf>, output: Output },
+    Run {
+        files: Vec<PathBuf>,
+        output: Output,
+        card: Option<PathBuf>,
+    },
     Help,
     Version,
 }
@@ -41,8 +46,10 @@ pub fn parse(args: impl IntoIterator<Item = OsString>) -> Result<Command, String
     let mut files = Vec::new();
     let (mut plain, mut json, mut fast) = (false, false, false);
     let mut only_files = false;
+    let mut card = None;
+    let mut args = args.into_iter();
 
-    for arg in args {
+    while let Some(arg) = args.next() {
         if only_files {
             files.push(PathBuf::from(arg));
             continue;
@@ -53,6 +60,10 @@ pub fn parse(args: impl IntoIterator<Item = OsString>) -> Result<Command, String
             Some("--plain") => plain = true,
             Some("--json") => json = true,
             Some("--fast") => fast = true,
+            Some("--card") => match args.next() {
+                Some(path) => card = Some(PathBuf::from(path)),
+                None => return Err("--card needs a file name, e.g. --card wrapped.svg".into()),
+            },
             Some("--") => only_files = true,
             Some(flag) if flag.starts_with('-') && flag.len() > 1 => {
                 return Err(format!("unknown option {flag} (try --help)"));
@@ -67,7 +78,11 @@ pub fn parse(args: impl IntoIterator<Item = OsString>) -> Result<Command, String
         (false, true) => Output::Plain,
         (false, false) => Output::Animated { fast },
     };
-    Ok(Command::Run { files, output })
+    Ok(Command::Run {
+        files,
+        output,
+        card,
+    })
 }
 
 #[cfg(test)]
@@ -84,7 +99,8 @@ mod tests {
             run(&[]),
             Ok(Command::Run {
                 files: vec![],
-                output: Output::Animated { fast: false }
+                output: Output::Animated { fast: false },
+                card: None
             })
         );
     }
@@ -95,14 +111,16 @@ mod tests {
             run(&["a.txt", "--json", "b.txt"]),
             Ok(Command::Run {
                 files: vec!["a.txt".into(), "b.txt".into()],
-                output: Output::Json
+                output: Output::Json,
+                card: None
             })
         );
         assert_eq!(
             run(&["--fast"]),
             Ok(Command::Run {
                 files: vec![],
-                output: Output::Animated { fast: true }
+                output: Output::Animated { fast: true },
+                card: None
             })
         );
     }
@@ -113,7 +131,8 @@ mod tests {
             run(&["--plain", "--", "--weird-name"]),
             Ok(Command::Run {
                 files: vec!["--weird-name".into()],
-                output: Output::Plain
+                output: Output::Plain,
+                card: None
             })
         );
     }
@@ -126,5 +145,18 @@ mod tests {
         assert!(run(&["--json", "--plain"]).is_err());
         // A lone "-" is a file name, not a flag.
         assert!(matches!(run(&["-"]), Ok(Command::Run { .. })));
+    }
+
+    #[test]
+    fn card_takes_a_file_name() {
+        assert_eq!(
+            run(&["--card", "me.svg", "h.txt"]),
+            Ok(Command::Run {
+                files: vec!["h.txt".into()],
+                output: Output::Animated { fast: false },
+                card: Some("me.svg".into())
+            })
+        );
+        assert!(run(&["--card"]).unwrap_err().contains("--card needs"));
     }
 }

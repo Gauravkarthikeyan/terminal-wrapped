@@ -17,8 +17,12 @@ use args::{Command, Output};
 use report::Report;
 
 fn main() -> ExitCode {
-    let (files, output) = match args::parse(std::env::args_os().skip(1)) {
-        Ok(Command::Run { files, output }) => (files, output),
+    let (files, output, card) = match args::parse(std::env::args_os().skip(1)) {
+        Ok(Command::Run {
+            files,
+            output,
+            card,
+        }) => (files, output, card),
         Ok(Command::Help) => {
             print!("{}", args::HELP);
             return ExitCode::SUCCESS;
@@ -65,6 +69,13 @@ fn main() -> ExitCode {
     }
 
     let report = Report::build(sources, &entries, tz::local_offset().unwrap_or(0));
+    if let Some(path) = &card {
+        if let Err(e) = std::fs::write(path, render::card::svg(&report)) {
+            eprintln!("could not write {}: {e}", path.display());
+            return ExitCode::FAILURE;
+        }
+        eprintln!("wrote your card to {}", path.display());
+    }
     let mut out = std::io::stdout().lock();
     let result = match output {
         Output::Json => render::json::write(&mut out, &report),
