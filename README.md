@@ -42,12 +42,18 @@ sudo: 0  force pushes: 5  pipes per command: 0.03
 (Run with `TZ=Asia/Kolkata`; hours are bucketed in your local time zone.)
 `--json` prints the same numbers as JSON, aggregates only, never your commands.
 
+`--card wrapped.svg` also writes a card to share. Same rule: program names and
+counts, never a full command line.
+
+<img src="docs/card.svg" alt="A shareable card: 'you are The Force Pusher', top programs as bars (git 63, ls 26, cargo 20, vim 13, docker 10), 154 commands, 71% after midnight, an 8 day streak, and the signature typo sl → ls." width="360">
+
 ## Try it
 
 ```sh
 cargo run --release                       # finds your bash, zsh and fish history
 cargo run --release -- ~/.zsh_history     # or point it at specific files
 cargo run --release -- --plain            # no animation; also --json, --fast, --help
+cargo run --release -- --card me.svg      # plus a card to share
 ```
 
 No dependencies, nothing leaves your machine. It reads the files and prints.
@@ -108,7 +114,8 @@ have a higher bar so the specific ones get a chance.
 - [x] stats: programs, git subcommands, hour of day, streaks, night-owl score, typos, `--force`
 - [x] a terminal personality ("The 3 AM Git Pusher", "The Docker Whisperer", ...)
 - [x] animated slide-by-slide reveal, plus `--plain` and `--json`
-- [ ] `--redact` to hide arguments, and a shareable SVG card
+- [x] a shareable SVG card (`--card`)
+- [ ] more slides: most chaotic day, longest command, `sudo !!` count
 
 ## License
 
